@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>迷雾森林</title>
+  <title>迷雾森林 - Misty Forest</title>
   <style>
     body {
       margin: 0;
@@ -30,7 +30,7 @@
     .choices {
       margin-top: 1rem;
     }
-    .choices button {
+    .choices button, #restartBtn, #langBtn {
       margin: 0.5rem;
       padding: 0.75rem 1.5rem;
       border: none;
@@ -39,8 +39,11 @@
       color: white;
       cursor: pointer;
     }
-    .choices button:hover {
+    .choices button:hover, #restartBtn:hover, #langBtn:hover {
       background-color: #666;
+    }
+    #controls {
+      margin-top: 1rem;
     }
   </style>
 </head>
@@ -48,65 +51,95 @@
   <div class="container">
     <div id="story"></div>
     <div class="choices" id="choices"></div>
+    <div id="controls">
+      <button id="restartBtn">🔄 重新开始 / Restart</button>
+      <button id="langBtn">🌐 切换语言 / Toggle Language</button>
+    </div>
   </div>
 
   <script>
+    let currentLang = 'zh';
+
     const storyData = {
-      start: {
-        text: "你醒来时，四周是浓雾，森林寂静得可怕。你手中有一个破旧的指南针。",
-        choices: [
-          { text: "跟着指南针走", next: "compassPath" },
-          { text: "随意乱走", next: "randomPath" }
-        ]
+      zh: {
+        start: {
+          text: "你醒来时，四周是浓雾，森林寂静得可怕。你手中有一个破旧的指南针。",
+          choices: [
+            { text: "跟着指南针走", next: "compassPath" },
+            { text: "随意乱走", next: "randomPath" }
+          ]
+        },
+        compassPath: {
+          text: "你跟着指南针，小心避开倒下的树干，远处有微弱的光亮。",
+          choices: [
+            { text: "向光亮走", next: "safePath" },
+            { text: "躲进树洞", next: "foxEncounter" }
+          ]
+        },
+        foxEncounter: {
+          text: "你遇到一只狐狸，它居然开口说话：‘别往那边走，那是猎人的陷阱。’",
+          choices: [
+            { text: "相信它", next: "foxEscape" },
+            { text: "无视它", next: "hunterTrap" }
+          ]
+        },
+        randomPath: {
+          text: "你越走越远，雾越来越浓，四周变得模糊。",
+          choices: [
+            { text: "试图爬树观察", next: "treeView" },
+            { text: "坐下来等待", next: "lostEnd" }
+          ]
+        },
+        safePath: { text: "你走向光亮，穿出森林的边界。你逃出了迷雾森林！（好结局）", choices: [] },
+        foxEscape: { text: "狐狸带你绕过陷阱，一路引导你走出了森林。你得救了！（神秘结局）", choices: [] },
+        hunterTrap: { text: "你掉进了猎人的陷阱……这是你的结局。（死亡结局）", choices: [] },
+        treeView: { text: "你看到了远处的火光，或许是出口……但你没力气走过去了。你迷失了。（迷失结局）", choices: [] },
+        lostEnd: { text: "你等待着……直到意识消失在黑暗中。你永远留在了这片森林里。（迷失结局）", choices: [] }
       },
-      compassPath: {
-        text: "你跟着指南针，小心避开倒下的树干，远处有微弱的光亮。",
-        choices: [
-          { text: "向光亮走", next: "safePath" },
-          { text: "躲进树洞", next: "foxEncounter" }
-        ]
-      },
-      foxEncounter: {
-        text: "你遇到一只狐狸，它居然开口说话：‘别往那边走，那是猎人的陷阱。’",
-        choices: [
-          { text: "相信它", next: "foxEscape" },
-          { text: "无视它", next: "hunterTrap" }
-        ]
-      },
-      randomPath: {
-        text: "你越走越远，雾越来越浓，四周变得模糊。",
-        choices: [
-          { text: "试图爬树观察", next: "treeView" },
-          { text: "坐下来等待", next: "lostEnd" }
-        ]
-      },
-      safePath: {
-        text: "你走向光亮，穿出森林的边界。你逃出了迷雾森林！（好结局）",
-        choices: []
-      },
-      foxEscape: {
-        text: "狐狸带你绕过陷阱，一路引导你走出了森林。你得救了！（神秘结局）",
-        choices: []
-      },
-      hunterTrap: {
-        text: "你掉进了猎人的陷阱……这是你的结局。（死亡结局）",
-        choices: []
-      },
-      treeView: {
-        text: "你看到了远处的火光，或许是出口……但你没力气走过去了。你迷失了。（迷失结局）",
-        choices: []
-      },
-      lostEnd: {
-        text: "你等待着……直到意识消失在黑暗中。你永远留在了这片森林里。（迷失结局）",
-        choices: []
+      en: {
+        start: {
+          text: "You wake up surrounded by thick mist. The forest is eerily silent. You hold a worn-out compass.",
+          choices: [
+            { text: "Follow the compass", next: "compassPath" },
+            { text: "Wander randomly", next: "randomPath" }
+          ]
+        },
+        compassPath: {
+          text: "You follow the compass, carefully stepping over fallen logs. There's a faint light in the distance.",
+          choices: [
+            { text: "Head toward the light", next: "safePath" },
+            { text: "Hide in a tree hole", next: "foxEncounter" }
+          ]
+        },
+        foxEncounter: {
+          text: "You encounter a fox that suddenly speaks: 'Don't go that way. It's a hunter's trap.'",
+          choices: [
+            { text: "Trust the fox", next: "foxEscape" },
+            { text: "Ignore it", next: "hunterTrap" }
+          ]
+        },
+        randomPath: {
+          text: "You wander deeper. The fog grows thicker. The world fades around you.",
+          choices: [
+            { text: "Climb a tree to see better", next: "treeView" },
+            { text: "Sit and wait", next: "lostEnd" }
+          ]
+        },
+        safePath: { text: "You follow the light and reach the forest's edge. You're safe! (Good Ending)", choices: [] },
+        foxEscape: { text: "The fox guides you away from traps and leads you out of the forest. You're saved! (Mystery Ending)", choices: [] },
+        hunterTrap: { text: "You fall into the hunter's trap... This is your end. (Death Ending)", choices: [] },
+        treeView: { text: "You see a fire far away. Maybe an exit... but you're too weak to reach it. You're lost. (Lost Ending)", choices: [] },
+        lostEnd: { text: "You wait... until the darkness takes your mind. You never left the forest. (Lost Ending)", choices: [] }
       }
     };
 
     const storyEl = document.getElementById('story');
     const choicesEl = document.getElementById('choices');
+    const restartBtn = document.getElementById('restartBtn');
+    const langBtn = document.getElementById('langBtn');
 
     function showScene(sceneKey) {
-      const scene = storyData[sceneKey];
+      const scene = storyData[currentLang][sceneKey];
       storyEl.textContent = scene.text;
       choicesEl.innerHTML = '';
       scene.choices.forEach(choice => {
@@ -116,6 +149,13 @@
         choicesEl.appendChild(btn);
       });
     }
+
+    restartBtn.onclick = () => showScene('start');
+
+    langBtn.onclick = () => {
+      currentLang = currentLang === 'zh' ? 'en' : 'zh';
+      showScene('start');
+    };
 
     showScene('start');
   </script>
