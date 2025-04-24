@@ -1,0 +1,16 @@
+{
+  "name": "misty-forest-game",
+  "version": "1.0.0",
+  "description": "Misty Forest is an interactive text adventure game built with HTML, CSS, and JavaScript. Players navigate a mysterious forest using a compass, making choices that lead to multiple endings. The game supports English and Chinese, with sound effects and accessibility features.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && npx serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

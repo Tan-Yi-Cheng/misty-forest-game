@@ -1,4 +1,6 @@
-export const story_zh = {
+import { StoryData } from '../src/script';
+
+export const story_zh: StoryData[string] = {
   start: {
     text: "你醒来时，四周是浓雾，森林寂静得可怕。你手中有一个破旧的指南针。",
     choices: [
