@@ -201,6 +201,12 @@
     });
 
     init();
+    window.addEventListener('click', () => {
+      if (isSoundOn && ambientSound.paused) {
+        ambientSound.play().catch(() => { });
+      }
+    }, { once: true });
+    
   </script>
 </body>
 </html>
