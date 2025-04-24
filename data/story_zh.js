@@ -40,7 +40,7 @@ export const story_zh = {
     choices: []
   },
   treeView: {
-    text: "你看到了远处的火光，或许是出口……但你没力气走过去了。你迷失了。（迷失结局）",
+    text: "你看到了远处的火光，或许是出口……但你没力气走过去了。你迷失了。",
     choices: [
       { text: "集中意志坚持前行", next: "torchPath" },
       { text: "回到地面，另找出路", next: "shadowWhispers" }

@@ -40,7 +40,7 @@ export const story_en = {
         choices: []
     },
     treeView: {
-        text: "You see a fire far away. Maybe an exit... but you're too weak to reach it. You're lost. (Lost Ending)",
+        text: "You see a fire far away. Maybe an exit... but you're too weak to reach it. You're lost.",
         choices: [
             { text: "Gather your strength and press on", next: "torchPath" },
             { text: "Return to the ground and find another way", next: "shadowWhispers" }
