@@ -102,9 +102,9 @@ const soundStatusEl = document.getElementById('soundStatus');
 let currentLang = localStorage.getItem('mistyForestLang') || 'zh';
 let isSoundOn = localStorage.getItem('mistyForestSound') !== 'off';
 let currentSceneKey = 'start';
-const clickSound = new Audio('../assets/click.mp3');
+const clickSound = new Audio('assets/click.mp3');
 clickSound.volume = 0.5;
-const ambientSound = new Audio('../assets/ambient.mp3');
+const ambientSound = new Audio('assets/ambient.mp3');
 ambientSound.loop = true;
 ambientSound.volume = 0.3;
 
@@ -192,7 +192,7 @@ function toggleSound() {
 
 // Initialize the game
 async function init() {
-  await preloadImage('/assets/background.png');
+  await preloadImage('assets/background.png');
   await loadStoryData();
   document.body.classList.remove('loading');
   if (importFailed) {
