@@ -1,0 +1,130 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #111;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background-image: url('../assets/background.png');
+    background-size: cover;
+    background-position: center;
+    transition: opacity 0.5s ease;
+  }
+  
+  body.loading {
+    opacity: 0;
+  }
+  
+  .container {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 600px;
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+  }
+  
+  .story-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeInText 0.8s ease forwards;
+  }
+  
+  .choices {
+    margin-top: 1.5rem;
+  }
+  
+  .choices button,
+  #restartBtn,
+  #langBtn,
+  #soundBtn {
+    margin: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #4a4a4a;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  
+  .choices button:hover,
+  #restartBtn:hover,
+  #langBtn:hover,
+  #soundBtn:hover {
+    background-color: #6a6a6a;
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3); /* 添加 hover 时的发光效果 */
+  }
+  
+  .choices button:focus,
+  #restartBtn:focus,
+  #langBtn:focus,
+  #soundBtn:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* 增强 focus 时的可见性 */
+  }
+  
+  .choices button:active,
+  #restartBtn:active,
+  #langBtn:active,
+  #soundBtn:active {
+    transform: scale(0.95); /* 点击时缩小 */
+    background-color: #3a3a3a; /* 点击时颜色略暗 */
+  }
+  
+  #controls {
+    margin-top: 1.5rem;
+  }
+  
+  .end-message {
+    font-style: italic;
+    margin-top: 1rem;
+    opacity: 0;
+    animation: fadeInText 1s ease forwards;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInText {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @media (prefers-contrast: high) {
+    .container {
+      background: rgba(0, 0, 0, 0.95);
+    }
+    .story-text,
+    .end-message {
+      color: #fff;
+      text-shadow: 1px 1px 2px #000;
+    }
+    .choices button,
+    #restartBtn,
+    #langBtn,
+    #soundBtn {
+      background-color: #333;
+      border: 1px solid #fff;
+    }
+  }

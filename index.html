@@ -1,88 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>迷雾森林 - Misty Forest</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #111;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 2rem;
-      background-image: url('assets/background.png');
-      background-size: cover;
-      background-position: center;
-      transition: opacity 0.5s ease;
-    }
-    body.loading {
-      opacity: 0;
-    }
-    .container {
-      background: rgba(0, 0, 0, 0.8);
-      padding: 2rem;
-      border-radius: 1rem;
-      max-width: 600px;
-      text-align: center;
-      animation: fadeIn 0.5s ease;
-    }
-    .story-text {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      opacity: 0;
-      animation: fadeInText 0.8s ease forwards;
-    }
-    .choices {
-      margin-top: 1.5rem;
-    }
-    .choices button, #restartBtn, #langBtn, #soundBtn {
-      margin: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.5rem;
-      background-color: #4a4a4a;
-      color: #fff;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background-color 0.3s, transform 0.1s;
-    }
-    .choices button:hover, #restartBtn:hover, #langBtn:hover, #soundBtn:hover {
-      background-color: #6a6a6a;
-      transform: scale(1.05);
-    }
-    .choices button:focus, #restartBtn:focus, #langBtn:focus, #soundBtn:focus {
-      outline: 2px solid #fff;
-      outline-offset: 2px;
-    }
-    #controls {
-      margin-top: 1.5rem;
-    }
-    .end-message {
-      font-style: italic;
-      margin-top: 1rem;
-      opacity: 0;
-      animation: fadeInText 1s ease forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeInText {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @media (prefers-contrast: high) {
-      .container { background: rgba(0, 0, 0, 0.95); }
-      .choices button, #restartBtn, #langBtn, #soundBtn { background-color: #333; }
-    }
-  </style>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body class="loading">
   <div class="container" role="main">
     <div id="story" class="story-text" aria-live="polite"></div>
@@ -93,120 +18,7 @@
       <button id="soundBtn" aria-label="Toggle sound">🔊 声音 / Sound: <span id="soundStatus">On</span></button>
     </div>
   </div>
-
-  <script type="module">
-    import { story_zh } from './data/story_zh.js';
-    import { story_en } from './data/story_en.js';
-
-
-    const storyData = {
-      zh: story_zh,
-      en: story_en
-    };
-
-    const storyEl = document.getElementById('story');
-    const choicesEl = document.getElementById('choices');
-    const restartBtn = document.getElementById('restartBtn');
-    const langBtn = document.getElementById('langBtn');
-    const soundBtn = document.getElementById('soundBtn');
-    const soundStatusEl = document.getElementById('soundStatus');
-
-    let currentLang = localStorage.getItem('mistyForestLang') || 'zh';
-    let isSoundOn = localStorage.getItem('mistyForestSound') !== 'off';
-    const clickSound = new Audio('assets/click.mp3');
-    clickSound.volume = 0.5;
-    const ambientSound = new Audio('assets/ambient.mp3');
-    ambientSound.loop = true;
-    ambientSound.volume = 0.3;
-
-    function preloadImage(url) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = url;
-        img.onload = resolve;
-        img.onerror = () => resolve();
-      });
-    }
-
-    function showScene(sceneKey) {
-      const scene = storyData[currentLang][sceneKey];
-      storyEl.textContent = scene.text;
-      choicesEl.innerHTML = '';
-
-      if (scene.choices.length === 0) {
-        const endMsg = document.createElement('p');
-        endMsg.className = 'end-message';
-        endMsg.textContent = currentLang === 'zh' ? '✨ 感谢你游玩这个故事！' : '✨ Thank you for playing!';
-        choicesEl.appendChild(endMsg);
-      } else {
-        scene.choices.forEach((choice, index) => {
-          const btn = document.createElement('button');
-          btn.textContent = choice.text;
-          btn.setAttribute('aria-label', choice.text);
-          btn.tabIndex = index;
-          btn.onclick = () => {
-            if (isSoundOn) clickSound.play();
-            showScene(choice.next);
-          };
-          choicesEl.appendChild(btn);
-        });
-      }
-    }
-
-    function toggleLanguage() {
-      currentLang = currentLang === 'zh' ? 'en' : 'zh';
-      localStorage.setItem('mistyForestLang', currentLang);
-      if (isSoundOn) clickSound.play();
-      showScene('start');
-    }
-
-    function toggleSound() {
-      isSoundOn = !isSoundOn;
-      soundStatusEl.textContent = isSoundOn ? 'On' : 'Off';
-      localStorage.setItem('mistyForestSound', isSoundOn ? 'on' : 'off');
-      if (isSoundOn) {
-        clickSound.play();
-        ambientSound.play().catch(() => {
-          console.log('Autoplay prevented; audio will play on next user interaction');
-        });
-      } else {
-        ambientSound.pause();
-      }
-    }
-
-    async function init() {
-      await preloadImage('assets/background.png');
-      document.body.classList.remove('loading');
-      showScene('start');
-      soundStatusEl.textContent = isSoundOn ? 'On' : 'Off';
-      if (isSoundOn) {
-        ambientSound.play().catch(() => {
-          console.log('Autoplay prevented; audio will play on next user interaction');
-        });
-      }
-    }
-
-    restartBtn.onclick = () => {
-      if (isSoundOn) clickSound.play();
-      showScene('start');
-    };
-    langBtn.onclick = toggleLanguage;
-    soundBtn.onclick = toggleSound;
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        const focused = document.activeElement;
-        if (focused.tagName === 'BUTTON') focused.click();
-      }
-    });
-
-    init();
-    window.addEventListener('click', () => {
-      if (isSoundOn && ambientSound.paused) {
-        ambientSound.play().catch(() => { });
-      }
-    }, { once: true });
-    
-  </script>
+  <script type="module" src="js/game.js"></script>
 </body>
+
 </html>
