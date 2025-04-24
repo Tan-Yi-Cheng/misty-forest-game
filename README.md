@@ -20,6 +20,7 @@ Play it live on [GitHub Pages](https://tan-yi-cheng.github.io/misty-forest-game/
 2. Open `index.html` in a browser or use a local server (e.g., `npx serve`).
 3. Ensure `assets/background.jpg` and `assets/click.mp3` are in place.
 
+<!-- This text is hidden 
 ## Contributing
 Contributions are welcome! Potential enhancements:
 - Add more story paths and endings
@@ -36,6 +37,8 @@ To contribute:
 
 ## Support the Project
 Help fund further development by contributing to our [Gitcoin Grant](https://gitcoin.co/grants) (link TBD). Your support can help add art, music, or new features!
+
+-->
 
 ## License
 MIT License. See [LICENSE](LICENSE) for details.
